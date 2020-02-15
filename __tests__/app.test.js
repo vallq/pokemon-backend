@@ -7,8 +7,7 @@ describe("app", () => {
       const apiEndpoints = require("../src/data/apiEndpoints.js");
       const { body: response } = await request(app)
         .get("/")
-        .expect(200)
-        .send(apiEndpoints);
+        .expect(200);
       expect(response).toMatchObject(apiEndpoints);
     });
   });
