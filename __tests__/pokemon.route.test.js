@@ -107,6 +107,21 @@ describe("pokemon", () => {
         expect(response).toMatchObject(expectedPokemon);
       });
 
+      it("PUT / should return Pokemon with new details", async () => {
+        const expectedPokemon = {
+          id: 2,
+          name: "Squirtle TWO",
+          japaneseName: "ゼニガメ 2",
+          baseHP: 45,
+          category: "Tiny Turtle Pokemon"
+        };
+        const { body: response } = await request(app)
+          .put(`/pokemon/${expectedPokemon.id}`)
+          .send(expectedPokemon)
+          .expect(200);
+        expect(response).toMatchObject(expectedPokemon);
+      });
+
       it("PATCH / should return Pokemon with updated details", async () => {
         const expectedPokemon = {
           id: 1,
@@ -117,6 +132,20 @@ describe("pokemon", () => {
           .send(expectedPokemon)
           .expect(200);
         expect(response.category).toEqual(expectedPokemon.category);
+      });
+
+      it("DELETE / should return Pokemon that has been removed", async () => {
+        const expectedPokemon = {
+          id: 1,
+          name: "Pikachu",
+          japaneseName: "ピカチュウ",
+          baseHP: 35,
+          category: "Mouse Pokemon"
+        };
+        const { body: response } = await request(app)
+          .delete(`/pokemon/${expectedPokemon.id}`)
+          .expect(200);
+        expect(response).toMatchObject(expectedPokemon);
       });
     });
   });
