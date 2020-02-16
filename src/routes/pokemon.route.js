@@ -11,8 +11,6 @@ const filterByName = async searchTerm => {
 router.get("/", async (req, res) => {
   if (req.query == "") {
     const pokemon = await BasicPokemon.find();
-    console.log(pokemon);
-    console.log(filterByName("chu"));
     res.status(200).send(pokemon);
   } else {
     const searchTerm = req.query.name;
@@ -20,4 +18,29 @@ router.get("/", async (req, res) => {
     res.status(200).send(expectedPokemon);
   }
 });
+
+router.post("/", async (req, res) => {
+  const pokemonToPost = new BasicPokemon(req.body);
+  //await BasicPokemon.init();
+  const newPokemon = await pokemonToPost.save();
+  res.status(201).send(newPokemon);
+});
+
+router.get("/:id", async (req, res) => {
+  const targetId = req.params.id;
+  const pokemonToGet = await BasicPokemon.findOne({ id: targetId });
+  res.status(200).send(pokemonToGet);
+});
+
+router.patch("/:id", async (req, res) => {
+  const targetId = req.params.id;
+  const infoToUpdate = req.body;
+  const pokemonToPatch = await BasicPokemon.findOneAndUpdate(
+    { id: targetId },
+    infoToUpdate,
+    { new: true }
+  );
+  res.status(200).send(pokemonToPatch);
+});
+
 module.exports = router;
