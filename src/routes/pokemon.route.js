@@ -32,6 +32,17 @@ router.get("/:id", async (req, res) => {
   res.status(200).send(pokemonToGet);
 });
 
+router.put("/:id", async (req, res) => {
+  const targetId = req.params.id;
+  const infoToReplace = req.body;
+  const pokemonToPut = await BasicPokemon.findOneAndReplace(
+    { id: targetId },
+    infoToReplace,
+    { new: true }
+  );
+  res.status(200).send(pokemonToPut);
+});
+
 router.patch("/:id", async (req, res) => {
   const targetId = req.params.id;
   const infoToUpdate = req.body;
@@ -41,6 +52,12 @@ router.patch("/:id", async (req, res) => {
     { new: true }
   );
   res.status(200).send(pokemonToPatch);
+});
+
+router.delete("/:id", async (req, res) => {
+  const targetId = req.params.id;
+  const pokemonToDelete = await BasicPokemon.findOneAndDelete( {id: targetId });
+  res.status(200).send(pokemonToDelete);
 });
 
 module.exports = router;
